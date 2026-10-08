@@ -1,0 +1,409 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#0C2A27">
+<title>Що? Де? Коли? Грузинський вечір</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🍷</text></svg>">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@500;700;900&family=Manrope:wght@400;600;800&family=Noto+Serif+Georgian:wght@700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#E6F0EC; --surface:#FFFFFF; --ink:#0E2A27; --muted:#4D6B66;
+  --teal:#1E6B60; --teal2:#2E8C7E; --pom:#C3203B; --saffron:#D99512; --line:#C5DBD4; --onaccent:#FFFFFF;
+  box-sizing:border-box;
+  padding-top:env(safe-area-inset-top,0px);
+  padding-bottom:env(safe-area-inset-bottom,0px);
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){
+    --bg:#0C2A27; --surface:#123A35; --ink:#EEF5F1; --muted:#9FC2BA;
+    --teal:#2F8E7F; --teal2:#1D6A5F; --pom:#FF5D73; --saffron:#F4B93A; --line:#22514A; --onaccent:#0C2A27;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#0C2A27; --surface:#123A35; --ink:#EEF5F1; --muted:#9FC2BA;
+  --teal:#2F8E7F; --teal2:#1D6A5F; --pom:#FF5D73; --saffron:#F4B93A; --line:#22514A; --onaccent:#0C2A27;
+}
+*,*::before,*::after{box-sizing:inherit}
+html{height:100%;scroll-padding-top:env(safe-area-inset-top,0px)}
+body{margin:0;min-height:100%;background:var(--bg);color:var(--ink);
+  font-family:Manrope,system-ui,-apple-system,"Segoe UI",sans-serif;font-size:17px;line-height:1.55;-webkit-tap-highlight-color:transparent}
+.wrap{max-width:720px;margin:0 auto;padding:18px 18px 40px}
+.display{font-family:Unbounded,"Arial Black",system-ui,sans-serif}
+.geo{font-family:"Noto Serif Georgian","Sylfaen",serif}
+button{font:inherit;font-weight:800;border:0;border-radius:999px;padding:16px 26px;cursor:pointer;min-height:54px;touch-action:manipulation}
+.btn-main{background:var(--saffron);color:#2A1A00;font-size:1.08rem;box-shadow:0 5px 0 #A86E06}
+.btn-main:active{transform:translateY(4px);box-shadow:0 1px 0 #A86E06}
+.btn-ghost{background:transparent;color:var(--ink);border:2px solid var(--line)}
+.btn-yes{background:var(--teal);color:#fff}
+.btn-no{background:var(--pom);color:#fff}
+button:focus-visible,summary:focus-visible{outline:3px solid var(--saffron);outline-offset:3px}
+.row{display:flex;flex-wrap:wrap;gap:12px}
+.full{width:100%}
+.hidden{display:none !important}
+.muted{color:var(--muted)}
+
+/* header */
+header{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:14px}
+.brand{font-family:Unbounded,system-ui,sans-serif;font-weight:900;font-size:1rem;line-height:1.1}
+.brand small{display:block;font-family:Manrope,sans-serif;font-weight:600;font-size:.8rem;color:var(--muted)}
+.iconbtn{min-height:44px;padding:8px 12px;white-space:nowrap;font-size:.9rem;background:var(--surface);color:var(--ink);border:1.5px solid var(--line)}
+
+/* score */
+.score{display:grid;grid-template-columns:1fr auto 1fr;align-items:center;background:var(--surface);border-radius:22px;padding:12px 16px;border:1.5px solid var(--line)}
+.side{display:flex;flex-direction:column;align-items:center}
+.side b{font-family:Unbounded,system-ui,sans-serif;font-size:2.4rem;line-height:1}
+.side span{font-size:.85rem;font-weight:700;color:var(--muted)}
+.side.a b{color:var(--teal)} .side.b b{color:var(--pom)}
+.vs{font-size:.8rem;color:var(--muted);text-align:center;font-weight:700}
+.bump{animation:bump .5s ease}
+@keyframes bump{40%{transform:scale(1.35)}}
+
+/* steps */
+.steps{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin:14px 0 6px;list-style:none;padding:0}
+.steps li{font-size:.74rem;font-weight:700;text-align:center;color:var(--muted);padding-top:8px;border-top:4px solid var(--line)}
+.steps li.on{color:var(--ink);border-color:var(--saffron)}
+.steps li.done{border-color:var(--teal)}
+.hint{background:var(--surface);border-left:5px solid var(--saffron);border-radius:12px;padding:12px 14px;margin:12px 0 18px;font-weight:600}
+
+/* wheel */
+.wheelbox{position:relative;width:min(88vw,430px);margin:6px auto 22px}
+.wheelbox svg{width:100%;height:auto;display:block}
+.sec{stroke:var(--bg);stroke-width:2}
+.sec.even{fill:var(--teal)} .sec.odd{fill:var(--teal2)}
+.sec.played{fill:var(--line)}
+.sec.hit{fill:var(--saffron)}
+.lbl{font-family:"Noto Serif Georgian","Sylfaen",serif;font-weight:700;font-size:15px;fill:#fff;text-anchor:middle;dominant-baseline:middle;pointer-events:none}
+.lbl.played{fill:var(--muted);opacity:.6}
+#arrow{transform-origin:200px 200px;transition:transform 4.2s cubic-bezier(.15,.7,.1,1)}
+@media (prefers-reduced-motion:reduce){#arrow{transition-duration:.6s}}
+.left{text-align:center;font-weight:700;color:var(--muted);margin-top:-8px;margin-bottom:16px}
+
+/* question */
+.card{background:var(--surface);border-radius:26px;padding:22px 20px;border:1.5px solid var(--line);position:relative;overflow:hidden}
+.tag{display:inline-flex;gap:8px;align-items:center;background:var(--bg);border-radius:999px;padding:6px 14px;font-weight:800;font-size:.85rem}
+.tag .geo{color:var(--saffron)}
+.qtext{font-size:clamp(1.2rem,4.4vw,1.5rem);font-weight:600;line-height:1.45;margin:16px 0 4px;max-width:60ch}
+.part{font-weight:800;color:var(--saffron);margin-top:14px}
+.ring{display:flex;flex-direction:column;align-items:center;margin:18px 0 10px}
+.ring svg{width:150px;height:150px}
+.ring .track{stroke:var(--line)} .ring .prog{stroke:var(--saffron);transition:stroke-dashoffset 1s linear}
+.ring.warn .prog{stroke:var(--pom)}
+.ring text{font-family:Unbounded,system-ui,sans-serif;font-weight:900;font-size:34px;fill:var(--ink);text-anchor:middle;dominant-baseline:central}
+.answer{background:var(--bg);border-radius:16px;padding:16px;margin:16px 0}
+.answer p{margin:0 0 8px} .answer p:last-child{margin:0}
+.answer b{color:var(--teal)}
+.lead{font-weight:800;font-size:1.05rem;margin:14px 0 12px}
+
+/* start / end */
+.hero{text-align:center;padding:10px 0 4px}
+.hero .geo{font-size:clamp(2rem,9vw,3rem);color:var(--saffron);line-height:1.3}
+.hero h1{font-family:Unbounded,system-ui,sans-serif;font-weight:900;font-size:clamp(2.1rem,9vw,3.4rem);line-height:1.02;margin:6px 0 10px;letter-spacing:-.02em}
+.how{list-style:none;padding:0;margin:22px 0;display:grid;gap:10px}
+.how li{display:grid;grid-template-columns:40px 1fr;gap:12px;align-items:start;background:var(--surface);border-radius:16px;padding:12px 14px;border:1.5px solid var(--line)}
+.how li span{font-family:Unbounded,system-ui,sans-serif;font-weight:900;background:var(--saffron);color:#2A1A00;border-radius:50%;width:36px;height:36px;display:grid;place-items:center}
+.modes{display:grid;gap:12px;margin-top:8px}
+.modes button small{display:block;font-weight:600;font-size:.85rem;opacity:.85}
+details{margin-top:22px;border-top:1.5px solid var(--line);padding-top:12px}
+summary{cursor:pointer;color:var(--muted);font-weight:700}
+dialog{border:0;border-radius:24px;padding:22px;max-width:520px;width:calc(100% - 32px);background:var(--surface);color:var(--ink)}
+dialog::backdrop{background:rgba(5,20,18,.6)}
+dialog h2{font-family:Unbounded,system-ui,sans-serif;margin:0 0 6px;font-size:1.3rem}
+.winner{font-family:Unbounded,system-ui,sans-serif;font-weight:900;font-size:clamp(1.8rem,8vw,2.8rem);line-height:1.1;margin:10px 0}
+footer{margin-top:28px;text-align:center;font-size:.85rem;color:var(--muted)}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<!-- START -->
+<section id="scrStart">
+  <div class="hero">
+    <div class="geo">საქართველო</div>
+    <h1>Що? Де? Коли?</h1>
+    <p class="muted">Грузинський вечір. Знавці проти ведучого.</p>
+  </div>
+  <ol class="how">
+    <li><span>1</span><div><b>Крутіть дзиґу.</b> Стрілка сама обере питання.</div></li>
+    <li><span>2</span><div><b>Хтось читає питання вголос.</b> Той, у кого телефон, і є ведучим на цей раунд.</div></li>
+    <li><span>3</span><div><b>Хвилина на обговорення.</b> Думайте разом, капітан називає одну відповідь.</div></li>
+    <li><span>4</span><div><b>Відкрийте правильну відповідь.</b> Вгадали: бал знавцям. Ні: бал ведучому.</div></li>
+  </ol>
+  <div id="resumeBox" class="hidden" style="margin-bottom:12px">
+    <button class="btn-main full" id="resume">Продовжити гру</button>
+  </div>
+  <div class="modes">
+    <button class="btn-main" id="modeSix">Грати до 6 балів<small>Як у телегрі, хто перший набере 6</small></button>
+    <button class="btn-ghost" id="modeAll">Зіграти всі 20 питань<small>Довга гра на весь вечір</small></button>
+  </div>
+  <details>
+    <summary>Підготовка (відкриває лише той, хто не грає)</summary>
+    <p>Серед питань є «Чорна скринька». Перед грою покладіть у коробку пляшку мінеральної води «Боржомі» і сховайте її, поки не випаде це питання.</p>
+  </details>
+</section>
+
+<!-- GAME -->
+<section id="scrGame" class="hidden">
+  <header>
+    <div class="brand">Що? Де? Коли?<small>Грузинський вечір</small></div>
+    <div class="row" style="gap:8px;flex-wrap:nowrap">
+      <button class="iconbtn" id="helpBtn">Як грати</button>
+      <button class="iconbtn" id="menuBtn">Нова гра</button>
+    </div>
+  </header>
+
+  <div class="score">
+    <div class="side a"><b id="sA">0</b><span>Знавці</span></div>
+    <div class="vs" id="goal"></div>
+    <div class="side b"><b id="sB">0</b><span>Ведучий</span></div>
+  </div>
+
+  <ol class="steps">
+    <li data-s="0">Дзиґа</li><li data-s="1">Питання</li><li data-s="2">Обговорення</li><li data-s="3">Відповідь</li>
+  </ol>
+  <div class="hint" id="hint"></div>
+
+  <!-- wheel -->
+  <div id="wheelStage">
+    <div class="wheelbox">
+      <svg viewBox="0 0 400 400" aria-label="Дзиґа з номерами питань">
+        <circle cx="200" cy="200" r="198" fill="var(--surface)"/>
+        <g id="sectors"></g>
+        <g id="arrow">
+          <polygon points="200,46 213,196 200,214 187,196" fill="var(--saffron)" stroke="#2A1A00" stroke-width="2"/>
+          <circle cx="200" cy="200" r="22" fill="var(--surface)" stroke="var(--saffron)" stroke-width="5"/>
+        </g>
+      </svg>
+    </div>
+    <div class="left" id="leftInfo"></div>
+    <button class="btn-main full" id="spinBtn">Крутити дзиґу</button>
+  </div>
+
+  <!-- question -->
+  <div id="qStage" class="hidden">
+    <article class="card">
+      <div class="tag"><span class="geo" id="qNum"></span><span id="qTheme"></span></div>
+      <div class="part hidden" id="qPart"></div>
+      <div class="qtext" id="qText"></div>
+
+      <div class="ring" id="ring">
+        <svg viewBox="0 0 150 150" aria-hidden="true">
+          <circle class="track" cx="75" cy="75" r="62" fill="none" stroke-width="12"/>
+          <circle class="prog" id="prog" cx="75" cy="75" r="62" fill="none" stroke-width="12" stroke-linecap="round"
+            transform="rotate(-90 75 75)" stroke-dasharray="389.56" stroke-dashoffset="0"/>
+          <text x="75" y="75" id="secs">60</text>
+        </svg>
+      </div>
+
+      <div id="actQuestion"><button class="btn-main full" id="startT"></button></div>
+      <div id="actTimer" class="row hidden">
+        <button class="btn-ghost" id="pauseT" style="flex:1">Пауза</button>
+        <button class="btn-main" id="earlyT" style="flex:2">Ми готові відповідати</button>
+      </div>
+      <div id="actAnswer" class="hidden">
+        <p class="lead" id="answerLead">Капітане, ваша відповідь?</p>
+        <button class="btn-main full" id="revealBtn">Показати правильну відповідь</button>
+      </div>
+      <div id="actReveal" class="hidden">
+        <div class="answer" id="answer"></div>
+        <p class="lead" id="judgeLead">Знавці відповіли правильно?</p>
+        <div class="row">
+          <button class="btn-yes" id="yesBtn" style="flex:1">Так, бал знавцям</button>
+          <button class="btn-no" id="noBtn" style="flex:1">Ні, бал ведучому</button>
+        </div>
+      </div>
+    </article>
+  </div>
+  <footer>Прогрес зберігається на цьому пристрої, можна спокійно закрити вкладку.</footer>
+</section>
+
+<!-- END -->
+<section id="scrEnd" class="hidden">
+  <div class="hero">
+    <div class="geo">გაუმარჯოს!</div>
+    <p class="muted" style="margin:6px 0 0">Гаумарджос, тобто «за перемогу»!</p>
+    <div class="winner" id="winner"></div>
+    <div class="score" style="margin:18px 0">
+      <div class="side a"><b id="eA">0</b><span>Знавці</span></div>
+      <div class="vs">рахунок</div>
+      <div class="side b"><b id="eB">0</b><span>Ведучий</span></div>
+    </div>
+    <p class="muted" id="endSub"></p>
+    <button class="btn-main" id="againBtn">Нова гра</button>
+  </div>
+</section>
+</div>
+
+<dialog id="helpDlg">
+  <h2>Як грати</h2>
+  <ol class="how" style="margin:14px 0">
+    <li><span>1</span><div>Натисніть «Крутити дзиґу», стрілка обере питання.</div></li>
+    <li><span>2</span><div>Прочитайте питання вголос і запустіть таймер.</div></li>
+    <li><span>3</span><div>Хвилина на обговорення. Можна відповісти раніше.</div></li>
+    <li><span>4</span><div>Капітан називає відповідь, відкрийте правильну і віддайте бал.</div></li>
+  </ol>
+  <p class="muted"><b>Бліц</b>: три короткі питання по 20 секунд. Бал знавцям, лише якщо правильні всі три.</p>
+  <button class="btn-main full" id="helpClose">Зрозуміло</button>
+</dialog>
+
+<script>
+const B64="W3sidCI6ICLQhtGB0YLQvtGA0ZbRjyIsICJrIjogIm5vcm1hbCIsICJxIjogItCi0LDQvNCw0YAg0L/RgNCw0LLQuNC70LAg0JPRgNGD0LfRltGU0Y4g0L3QsCDRgNGD0LHQtdC20ZYgWElJ4oCTWElJSSDRgdGC0L7Qu9GW0YLRjCwg0ZYg0YHQsNC80LUg0L/RgNC4INC90ZbQuSDQutGA0LDRl9C90LAg0L/QtdGA0LXQttC40LvQsCDCq9C30L7Qu9C+0YLRgyDQtNC+0LHRg8K7LiDQkNC70LUg0LIg0L7RhNGW0YbRltC50L3QuNGFINC00L7QutGD0LzQtdC90YLQsNGFINGX0Zcg0YLQuNGC0YPQu9GD0LLQsNC70Lgg0L3QtSDRgtCw0LosINGP0Log0L7Rh9GW0LrRg9GU0Ygg0LTQu9GPINC20ZbQvdC60LguINCv0Lo/IiwgImEiOiAiPGI+0KbQsNGA0LXQvDwvYj4gKNCz0YDRg9C30LjQvdGB0YzQutC+0Y4gwqvQvNC10L/QtcK7KS4g0IfRlyDQstC10LvQuNGH0LDQu9C4IMKr0YbQsNGA0LXQvCDRhtCw0YDRltCywrssINCwINC90LUg0YbQsNGA0LjRhtC10Y4uIn0sIHsidCI6ICLQhtGB0YLQvtGA0ZbRjyIsICJrIjogIm5vcm1hbCIsICJxIjogItCU0LDQstC40LTQsCBJViwg0Y/QutC40Lkg0L7QsSfRlNC00L3QsNCyINCT0YDRg9C30ZbRjiDRgtCwINCy0ZbQtNCx0YPQtNC+0LLRg9Cy0LDQsiDQutGA0LDRl9C90YMg0L/RltGB0LvRjyDQvdCw0LLQsNC7LCDQvdCw0YDQvtC0INC/0YDQvtC30LLQsNCyIMKr0JDQs9C80LDRiNC10L3QtdCx0LXQu9GWwrsuINCf0LXRgNC10LrQu9Cw0LTRltGC0Ywg0YbQtSDQv9GA0ZbQt9Cy0LjRgdGM0LrQvi4iLCAiYSI6ICI8Yj7QkdGD0LTRltCy0L3QuNC6PC9iPiAo0JLRltC00L3QvtCy0LvRjtCy0LDRhykuINCU0LDQstC40LQgSVYg0JHRg9C00ZbQstC90LjQui4ifSwgeyJ0IjogItCG0YHRgtC+0YDRltGPINGC0LAg0LzRltGE0LgiLCAiayI6ICJub3JtYWwiLCAicSI6ICLQoyDQs9C+0YDQsNGFINCT0YDRg9C30ZbRlyDQt9C00LDQstC90LAg0LzQuNC70Lgg0LfQvtC70L7RgtC+LCDQvtC/0YPRgdC60LDRjtGH0Lgg0LIg0LPRltGA0YHRjNC60ZYg0YDRltGH0LrQuCDQvtCy0LXRh9GWINGI0LrRg9GA0LgsINC90LAg0LLQvtCy0L3RliDRj9C60LjRhSDQvtGB0ZbQtNCw0LvQuCDQt9C+0LvQvtGC0ZYg0LrRgNGD0L/QuNC90LrQuC4g0K/QutC40Lkg0LLRltC00L7QvNC40Lkg0LzRltGELCDQt9CwINC+0LTQvdGW0ZTRjiDQtyDQstC10YDRgdGW0LksINCy0LjRgNGW0YEg0ZbQtyDRhtGM0L7Qs9C+INC30LLQuNGH0LDRjj8iLCAiYSI6ICLQnNGW0YQg0L/RgNC+INCw0YDQs9C+0L3QsNCy0YLRltCyINGWIDxiPtCX0L7Qu9C+0YLQtSDRgNGD0L3QvjwvYj4uINCQ0YDQs9C+0L3QsNCy0YLQuCDQv9C70LjQstC70Lgg0YHQsNC80LUg0LTQviDQmtC+0LvRhdGW0LTQuCwg0L3QsCDQt9Cw0YXRltC0INGB0YPRh9Cw0YHQvdC+0Zcg0JPRgNGD0LfRltGXLiJ9LCB7InQiOiAi0JrRg9C70ZbQvdCw0YDRltGPIiwgImsiOiAibm9ybWFsIiwgInEiOiAi0J/RltGB0LvRjyDQstC10YfQtdGA0ZYg0Lcg0YXRltC90LrQsNC70ZYg0L3QsCDRgtCw0YDRltC70LrQsNGFINGH0LDRgdGC0L4g0LvQuNGI0LDRjtGC0YzRgdGPINC+0LTQvdCw0LrQvtCy0ZYg0LTRgNGW0LHQvdGWINC30LDQu9C40YjQutC4LCDRliDQt9CwINC90LjQvNC4INC90LDQstGW0YLRjCDQstC70LDRiNGC0L7QstGD0Y7RgtGMINC/0ZbQtNGA0LDRhdGD0L3QvtC6LiDQqdC+INGG0LUg0LfQsCDQt9Cw0LvQuNGI0LrQuCDRliDRidC+INGA0LDRhdGD0Y7RgtGMPyIsICJhIjogIjxiPtCl0LLQvtGB0YLQuNC60LggKNCy0LXRgNGF0ZbQstC60LgpINGF0ZbQvdC60LDQu9GWPC9iPi4g0IfRhSDRgtGA0LDQtNC40YbRltC50L3QviDQvdC1INGX0LTRj9GC0YwsINCwINC30LAg0LrRltC70YzQutGW0YHRgtGOINGF0LLQvtGB0YLQuNC60ZbQsiDQstC40LTQvdC+LCDRhdGC0L4g0YHQutGW0LvRjNC60Lgg0Lcn0ZfQsi4ifSwgeyJ0IjogItCS0LjQvdC+IiwgImsiOiAibm9ybWFsIiwgInEiOiAi0J3QsNC30LLRgyDQvtC00L3QvtCz0L4g0Lcg0L3QsNC50LLRltC00L7QvNGW0YjQuNGFINCz0YDRg9C30LjQvdGB0YzQutC40YUg0YHQvtGA0YLRltCyINCy0LjQvdC+0LPRgNCw0LTRgyDQvNC+0LbQvdCwINC/0LXRgNC10LrQu9Cw0YHRgtC4INGP0LogwqvRgtC+0LksINGJ0L4g0YTQsNGA0LHRg9GUwrsuINCn0LjQvCDRhtC10Lkg0YHQvtGA0YIg0LLRltC00YDRltC30L3Rj9GU0YLRjNGB0Y8g0LLRltC0INCx0ZbQu9GM0YjQvtGB0YLRliDRh9C10YDQstC+0L3QuNGFINGB0L7RgNGC0ZbQsj8iLCAiYSI6ICLQptC1IDxiPtCh0LDQv9C10YDQsNCy0ZY8L2I+OiDRgyDQvdGM0L7Qs9C+INGH0LXRgNCy0L7QvdGWINC90LUg0LvQuNGI0LUg0YjQutGW0YDQutCwLCDQsCDQuSDQvCfRj9C60YPRiCDRgtCwINGB0ZbQui4ifSwgeyJ0IjogItCR0LvRltGGOiDQutGD0YXQvdGPINGWINC60L3QuNCz0LgiLCAiayI6ICJibGl0eiIsICJxIjogWyLQmtC40YHQu9C40Lkg0YHQvtGD0YEg0LTQviDQvCfRj9GB0LAg0ZYg0LTQuNC60LAg0YHQu9C40LLQsCwg0Lcg0Y/QutC+0Zcg0LnQvtCz0L4g0YDQvtCx0LvRj9GC0YwsINC80LDRjtGC0Ywg0L7QtNC90LDQutC+0LLRgyDQvdCw0LfQstGDLiDQr9C60YM/IiwgItCd0LDQt9Cy0LAg0YbRltGU0Zcg0YHRgtGA0LDQstC4INGB0LrQu9Cw0LTQsNGU0YLRjNGB0Y8g0LfRliDRgdC70ZbQsiDCq9C60LjRgdC70L7QvNC+0LvQvtGH0L3QuNC5INGB0LjRgMK7INGWIMKr0YXQu9GW0LHCuy4g0KnQviDRhtC1INC30LAg0YHRgtGA0LDQstCwPyIsICLQoyDQv9C+0LXQvNGWINCo0L7RgtCwINCg0YPRgdGC0LDQstC10LvRliDQstC40YLRj9C30Ywg0L7QtNGP0LPQvdC10L3QuNC5INGDINGI0LrRg9GA0YMuINCv0LrQvtCz0L4g0LfQstGW0YDQsD8iXSwgImEiOiBbIjxiPtCi0LrQtdC80LDQu9GWPC9iPiIsICI8Yj7QpdCw0YfQsNC/0YPRgNGWPC9iPiIsICI8Yj7QotC40LPRgNCwPC9iPiAowqvQktC40YLRj9C30Ywg0YMg0YLQuNCz0YDQvtCy0ZbQuSDRiNC60YPRgNGWwrspIl19LCB7InQiOiAi0KLRgNCw0LTQuNGG0ZbRlyIsICJrIjogIm5vcm1hbCIsICJxIjogItCi0YDQsNC00LjRhtGW0LnQvdC1INCz0YDRg9C30LjQvdGB0YzQutC1INC30LDRgdGC0ZbQu9C70Y8g0Lcg0YLQvtGB0YLQsNC80LgsINGC0LDQvNCw0LTQvtGOINGWINC00L7QstCz0LjQvNC4INGA0L7Qt9C80L7QstCw0LzQuCDQvdCw0LfQuNCy0LDRlNGC0YzRgdGPINGB0LvQvtCy0L7QvCwg0Y/QutC1INCx0YPQutCy0LDQu9GM0L3QviDQvtC30L3QsNGH0LDRlCDQt9Cy0LjRh9Cw0LnQvdC40Lkg0L/RgNC10LTQvNC10YIsINCx0LXQtyDRj9C60L7Qs9C+INGG0LXQuSDRgdGC0ZbQuyDQvdC1INC90LDQutGA0LjQstCw0Y7RgtGMLiDQndCw0LfQstGW0YLRjCDRgdC70L7QstC+INGWINC/0YDQtdC00LzQtdGCLiIsICJhIjogIjxiPtCh0YPQv9GA0LA8L2I+LCDRgtC+0LHRgtC+IMKr0YHQutCw0YLQtdGA0YLQuNC90LDCuy4ifSwgeyJ0IjogItCi0YDQsNC00LjRhtGW0ZciLCAiayI6ICJub3JtYWwiLCAicSI6ICLQl9CwINC/0L7RiNC40YDQtdC90LjQvCDRgyDQk9GA0YPQt9GW0Zcg0L/QvtCy0ZbRgCfRj9C8LCDQtyDQvtC00L3QuNC8INC/0L7Qv9GD0LvRj9GA0L3QuNC8INC90LDQv9C+0ZTQvCDRgtC+0YHRgtC4INC60LDQttGD0YLRjCDRhdGW0LHQsCDRidC+INC30LAg0LLQvtGA0L7Qs9GW0LIsINCwINC30LAg0LTRgNGD0LfRltCyINGWINGA0ZbQtNC90LjRhSDRgtCw0Log0L3QtSDQs9C+0LTQuNGC0YzRgdGPLiDQr9C60LjQuSDRhtC1INC90LDQv9GW0Lk/IiwgImEiOiAiPGI+0J/QuNCy0L48L2I+LiDQotC+0YHRgiDQtyDQv9C40LLQvtC8INCy0LLQsNC20LDRlNGC0YzRgdGPINC90LXQtNC+0YDQtdGH0L3QuNC8LCDCq9C30LAg0LLQvtGA0L7Qs9GW0LLCuy4ifSwgeyJ0IjogItCi0YDQsNC00LjRhtGW0ZciLCAiayI6ICJub3JtYWwiLCAicSI6ICLQoyAyMDAxINGA0L7RhtGWINCu0J3QldCh0JrQniDQv9C10YDRiNC40Lwg0YHQtdGA0LXQtCDQs9GA0YPQt9C40L3RgdGM0LrQuNGFINC90LDQtNCx0LDQvdGMINCy0L3QtdGB0LvQviDQtNC+INGB0L/QuNGB0LrRgyDRiNC10LTQtdCy0YDRltCyINC90LXQvNCw0YLQtdGA0ZbQsNC70YzQvdC+0Zcg0YHQv9Cw0LTRidC40L3QuCDQs9GA0YPQt9C40L3RgdGM0LrQuNC54oCmINGJ0L4/INCf0ZbQtNC60LDQt9C60LA6INC00LvRjyDRhtGM0L7Qs9C+INC/0L7RgtGA0ZbQsdC90ZYg0YnQvtC90LDQudC80LXQvdGI0LUg0YLRgNC+0ZQg0LvRjtC00LXQuS4iLCAiYSI6ICI8Yj7QkdCw0LPQsNGC0L7Qs9C+0LvQvtGB0LjQuSAo0L/QvtC70ZbRhNC+0L3RltGH0L3QuNC5KSDRgdC/0ZbQsjwvYj4uIn0sIHsidCI6ICLQnNC+0LLQsCIsICJrIjogIm5vcm1hbCIsICJxIjogItCh0LrRltC70YzQutC4INC70ZbRgtC10YAg0YMg0YHRg9GH0LDRgdC90ZbQuSDQs9GA0YPQt9C40L3RgdGM0LrRltC5INCw0LHQtdGC0YbRliDQvNGF0LXQtNGA0YPQu9GWPyDQn9GW0LTQutCw0LfQutCwOiDRgdGC0ZbQu9GM0LrQuCDQtiwg0YHQutGW0LvRjNC60Lgg0LIg0LDQsdC10YLRhtGWINC60YDQsNGX0L3QuCwg0Lcg0Y/QutC+0Y4g0LIg0JPRgNGD0LfRltGXINC90LDQudGB0LrQu9Cw0LTQvdGW0YjRliDQstGW0LTQvdC+0YHQuNC90LguIiwgImEiOiAiPGI+MzM8L2I+LiJ9LCB7InQiOiAi0JzQvtCy0LAiLCAiayI6ICJub3JtYWwiLCAicSI6ICLQk9GA0YPQt9C40L3RgdGM0LrQvtGOIMKr0LDRgNCwwrsg0L7Qt9C90LDRh9Cw0ZQgwqvQvdGWwrsuINCh0LvQvtCy0L4gwqvRgtCw0LrCuyDRgyDQs9GA0YPQt9C40L3RgdGM0LrRltC5INGJ0LUg0LrQvtGA0L7RgtGI0LU6INGD0YHRjNC+0LPQviDQtNCy0ZYg0LvRltGC0LXRgNC4LiDQr9C6INCz0YDRg9C30LjQvdGB0YzQutC+0Y4g0LHRg9C00LUgwqvRgtCw0LrCuz8iLCAiYSI6ICI8Yj7Cq9Ca0ZbCuzwvYj4gKNCwINGJ0LUg0LLQstGW0YfQu9C40LLRltGI0LUgwqvQtNGW0LDRhcK7KS4ifSwgeyJ0IjogItCc0L7QstCwIiwgImsiOiAibm9ybWFsIiwgInEiOiAi0JzQuCwg0LLRltGC0LDRjtGH0LjRgdGMLCDQsdCw0LbQsNGU0LzQviDQt9C00L7RgNC+0LIn0Y8uINCQINCz0YDRg9C30LjQvdGB0YzQutC1IMKr0LPQsNC80LDRgNC00LbQvtCx0LDCuyDQsdGD0LrQstCw0LvRjNC90L4g0LHQsNC20LDRlCDRltC90YjQvtCz0L4uINCn0L7Qs9C+PyIsICJhIjogIjxiPtCf0LXRgNC10LzQvtCz0Lg8L2I+LiDQodC70L7QstC+INC/0L7RhdC+0LTQuNGC0Ywg0LLRltC0IMKr0LPQsNC80LDRgNC00LbQstC10LHQsMK7LCDCq9C/0LXRgNC10LzQvtCz0LDCuy4ifSwgeyJ0IjogItCT0LXQvtCz0YDQsNGE0ZbRjyIsICJrIjogIm5vcm1hbCIsICJxIjogItCX0LAg0LvQtdCz0LXQvdC00L7Rjiwg0YbQsNGAINCS0LDRhdGC0LDQvdCzINCT0L7RgNCz0LDRgdCw0LvRliDQv9C+0LvRjtCy0LDQsiwg0ZYg0LnQvtCz0L4g0L/RltC00LHQuNGC0LjQuSDQv9GC0LDRhSDRg9C/0LDQsiDRgyDQtNC20LXRgNC10LvQviDRgtCwINC+0LTRgNCw0LfRgyDQt9Cy0LDRgNC40LLRgdGPLiDQptCw0YAg0LfQstC10LvRltCyINC30LDRgdC90YPQstCw0YLQuCDQvdCwINGG0YzQvtC80YMg0LzRltGB0YbRliDQvNGW0YHRgtC+LiDQr9C6INCy0L7QvdC+INC90LDQt9C40LLQsNGU0YLRjNGB0Y8g0ZYg0YnQviDQvtC30L3QsNGH0LDRlCDQudC+0LPQviDQvdCw0LfQstCwPyIsICJhIjogIjxiPtCi0LHRltC70ZbRgdGWPC9iPiwg0LLRltC0IMKr0YLQsdGW0LvRlsK7LCDRgtC+0LHRgtC+IMKr0YLQtdC/0LvQuNC5wrsuINCi0LDQvCDQs9Cw0YDRj9GH0ZYg0YHRltGA0YfQsNC90ZYg0LTQttC10YDQtdC70LAuIn0sIHsidCI6ICLQk9C10L7Qs9GA0LDRhNGW0Y8iLCAiayI6ICJub3JtYWwiLCAicSI6ICLQoyDQs9GW0YDRgdGM0LrQvtC80YMg0YDQtdCz0ZbQvtC90ZYg0KHQstCw0L3QtdGC0ZYg0LzQsNC50LbQtSDQutC+0LbQvdCwINGB0YLQsNGA0LAg0YDQvtC00LjQvdCwINC80LDQu9CwINCy0LvQsNGB0L3RgyDQutCw0Lwn0Y/QvdGDINCy0LXQttGDINC90LAg0LrRltC70YzQutCwINC/0L7QstC10YDRhdGW0LIuINCU0LvRjyDRh9C+0LPQviDQstC+0L3QsCDQsdGD0LvQsCDQv9C+0YLRgNGW0LHQvdCwPyIsICJhIjogItCU0LvRjyA8Yj7Qt9Cw0YXQuNGB0YLRgzwvYj46INCy0ZbQtCDQstC+0YDQvtCz0ZbQsiwg0L3QsNC/0LDQtNGW0LIg0YHRg9GB0ZbQtNGW0LIg0L/RltC0INGH0LDRgSDQutGA0L7QstC90L7RlyDQv9C+0LzRgdGC0LgsINCwINGC0LDQutC+0LYg0LLRltC0INC70LDQstC40L0uIn0sIHsidCI6ICLQkdC70ZbRhjog0LPQtdC+0LPRgNCw0YTRltGPIiwgImsiOiAiYmxpdHoiLCAicSI6IFsi0K/QutC1INC80L7RgNC1INC+0LzQuNCy0LDRlCDQk9GA0YPQt9GW0Y4/IiwgItCXINGP0LrQvtGOINC60YDQsNGX0L3QvtGOINCT0YDRg9C30ZbRjyDQvNC10LbRg9GUINC90LAg0L/RltCy0LTQtdC90L3QvtC80YMg0LfQsNGF0L7QtNGWLCDQstC30LTQvtCy0LYg0LzQvtGA0YHRjNC60L7Qs9C+INGD0LfQsdC10YDQtdC20LbRjz8iLCAi0JrRgNGW0Lwg0KDQvtGB0ZbRlyDRgtCwINCi0YPRgNC10YfRh9C40L3QuCwg0JPRgNGD0LfRltGPINC80LXQttGD0ZQg0YnQtSDQtyDQtNCy0L7QvNCwINC60YDQsNGX0L3QsNC80LguINCXINGP0LrQuNC80Lg/Il0sICJhIjogWyI8Yj7Qp9C+0YDQvdC1PC9iPiIsICI8Yj7QotGD0YDQtdGH0YfQuNC90LA8L2I+IiwgIjxiPtCS0ZbRgNC80LXQvdGW0Y8g0YLQsCDQkNC30LXRgNCx0LDQudC00LbQsNC9PC9iPiJdfSwgeyJ0IjogItCa0ZbQvdC+IiwgImsiOiAibm9ybWFsIiwgInEiOiAi0JPQvtC70L7QstC90LjQuSDQs9C10YDQvtC5INGE0ZbQu9GM0LzRgyDQk9C10L7RgNCz0ZbRjyDQlNCw0L3QtdC70ZbRlywg0YHRltC70YzRgdGM0LrQuNC5INC/0ZbQu9C+0YIg0JLQsNC70ZbQutC+LCDQvNGA0ZbRlCDQv9GA0L4g0LLQtdC70LjQutGWINC70ZbRgtCw0LrQuC4g0JnQvtCz0L4g0L/RgNGW0LfQstC40YHRjNC60L4g0LTQsNC70L4g0L3QsNC30LLRgyDRhNGW0LvRjNC80YMg0ZYg0L7Qt9C90LDRh9Cw0ZQg0YXQuNC20L7Qs9C+INC/0YLQsNGF0LAuINCd0LDQt9Cy0ZbRgtGMINGE0ZbQu9GM0LwuIiwgImEiOiAiPGI+wqvQnNGW0LzQuNC90L7CuzwvYj4sINCz0YDRg9C30LjQvdGB0YzQutC+0Y4gwqvRj9GB0YLRgNGD0LHCuyAo0YfQsNGB0YLQviDQv9C10YDQtdC60LvQsNC00LDRjtGC0Ywg0Y/QuiDCq9GB0L7QutGW0LvCuykuIn0sIHsidCI6ICLQodC/0L7RgNGCIiwgImsiOiAibm9ybWFsIiwgInEiOiAi0KMgMTk3OCDRgNC+0YbRliDQndC+0L3QsCDQk9Cw0L/RgNGW0L3QtNCw0YjQstGW0LvRliDRgdGC0LDQu9CwINC/0LXRgNGI0L7RjiDQttGW0L3QutC+0Y4g0YMg0YHQstGW0YLRliwg0Y/QutCwINC+0YLRgNC40LzQsNC70LAg0L3QsNC50LLQuNGJ0LUg0LfQstCw0L3QvdGPINCyINGG0YzQvtC80YMg0LLQuNC00ZYg0YHQv9C+0YDRgtGDLCDRj9C60LUg0LTQviDRgtC+0LPQviDQtNCw0LLQsNC70Lgg0YLRltC70YzQutC4INGH0L7Qu9C+0LLRltC60LDQvC4g0K/QutC40Lkg0LLQuNC0INGB0L/QvtGA0YLRgz8iLCAiYSI6ICI8Yj7QqNCw0YXQuDwvYj4uINCd0L7QvdCwINCT0LDQv9GA0ZbQvdC00LDRiNCy0ZbQu9GWLCDQv9C10YDRiNCwINC20ZbQvdC60LAt0LPRgNC+0YHQvNC10LnRgdGC0LXRgC4ifSwgeyJ0IjogItCi0LDQvdC10YbRjCIsICJrIjogIm5vcm1hbCIsICJxIjogItCjINCz0YDRg9C30LjQvdGB0YzQutC40YUg0YfQvtC70L7QstGW0YfQuNGFINGC0LDQvdGG0Y/RhSDRgtCw0L3RhtGO0YDQuNGB0YLQuCDRgNC+0LHQu9GP0YLRjCDRgtC1LCDRidC+INCyINC60LvQsNGB0LjRh9C90L7QvNGDINCx0LDQu9C10YLRliDQsNGB0L7RhtGW0Y7RlNGC0YzRgdGPINC3INCx0LDQu9C10YDQuNC90LDQvNC4INGWINC00LvRjyDRh9C+0LPQviDRl9C8INC/0L7RgtGA0ZbQsdC90LUg0YHQv9C10YbRltCw0LvRjNC90LUg0LLQt9GD0YLRgtGPLiDQk9GA0YPQt9C40L3QuCDQtiDQvtCx0YXQvtC00Y/RgtGM0YHRjyDQt9Cy0LjRh9Cw0LnQvdC40LzQuCDQvCfRj9C60LjQvNC4INGH0L7QsdGW0YLRjNC80LguINCp0L4g0LLQvtC90Lgg0YDQvtCx0LvRj9GC0Yw/IiwgImEiOiAi0KLQsNC90YbRjtGO0YLRjCA8Yj7QvdCwINC/0LDQu9GM0YbRj9GFINC90ZbQszwvYj4sINGP0Log0L3QsCDQv9GD0LDQvdGC0LDRhS4ifSwgeyJ0IjogItCn0L7RgNC90LAg0YHQutGA0LjQvdGM0LrQsCIsICJrIjogImJveCIsICJxIjogItCS0LXQtNGD0YfQuNC5LCDQstC40L3QvtGB0Ywg0YHQutGA0LjQvdGM0LrRgyEg0KMg0L3RltC5INGA0ZbRhywg0L/QvtCyJ9GP0LfQsNC90LAg0Lcg0LrRg9GA0L7RgNGC0L3QuNC8INC80ZbRgdGC0LXRh9C60L7QvCwg0LTQtSDQutC+0LvQuNGB0Ywg0LzQsNC70LAg0YDQtdC30LjQtNC10L3RhtGW0Y4g0YDQvtC00LjQvdCwINGA0L7RgdGW0LnRgdGM0LrQuNGFINGW0LzQv9C10YDQsNGC0L7RgNGW0LIg0KDQvtC80LDQvdC+0LLQuNGFLiDQh9GXINC30L3QsNGO0YLRjCDQtNCw0LvQtdC60L4g0LfQsCDQvNC10LbQsNC80Lgg0JPRgNGD0LfRltGXLCDQsCDQv9GW0LTRgNC+0LHQvtC6INC60L7Qu9C40YHRjCDQsdGD0LvQviDQsdGW0LvRjNGI0LUsINC90ZbQtiDQvtGA0LjQs9GW0L3QsNC70YMuINCp0L4g0LIg0YfQvtGA0L3RltC5INGB0LrRgNC40L3RjNGG0ZY/IiwgImEiOiAi0J/Qu9GP0YjQutCwIDxiPsKr0JHQvtGA0LbQvtC80ZbCuzwvYj4uIn0sIHsidCI6ICLQodC40LzQstC+0LvQuCIsICJrIjogIm5vcm1hbCIsICJxIjogItCf0YDQsNC/0L7RgCDQk9GA0YPQt9GW0Zcg0YfQsNGB0YLQviDQvdCw0LfQuNCy0LDRjtGC0YwgwqvQv9GA0LDQv9C+0YDQvtC8INC/J9GP0YLQuOKApsK7LiDQnyfRj9GC0Lgg0YfQvtCz0L4/IiwgImEiOiAiPGI+0KXRgNC10YHRgtGW0LI8L2I+OiDQvtC00LjQvSDQstC10LvQuNC60LjQuSDRh9C10YDQstC+0L3QuNC5INGWINGH0L7RgtC40YDQuCDQvNCw0LvRli4ifV0=";
+const DATA=JSON.parse(new TextDecoder().decode(Uint8Array.from(atob(B64),c=>c.charCodeAt(0))));
+const N=DATA.length, STEP=360/N, KEY="chgk-georgia-v1", C=389.56;
+const NUMS=["ა","ბ","გ","დ","ე","ვ","ზ","ჱ","თ","ი","ია","იბ","იგ","იდ","იე","ივ","იზ","იჱ","ით","კ"];
+const $=id=>document.getElementById(id);
+let S=null, tick=null, left=0, spinning=false, actx=null;
+
+function save(){try{localStorage.setItem(KEY,JSON.stringify(S))}catch(e){}}
+function load(){try{const v=JSON.parse(localStorage.getItem(KEY));return v&&v.phase&&v.phase!=="end"?v:null}catch(e){return null}}
+function clearSave(){try{localStorage.removeItem(KEY)}catch(e){}}
+
+function beep(f,d){try{actx=actx||new (window.AudioContext||window.webkitAudioContext)();
+  const o=actx.createOscillator(),g=actx.createGain();o.frequency.value=f;o.connect(g);g.connect(actx.destination);
+  g.gain.setValueAtTime(.2,actx.currentTime);g.gain.exponentialRampToValueAtTime(.001,actx.currentTime+d);
+  o.start();o.stop(actx.currentTime+d)}catch(e){}}
+function buzz(ms){try{navigator.vibrate&&navigator.vibrate(ms)}catch(e){}}
+
+/* build wheel */
+(function(){
+  const g=$("sectors"),r=190,ns="http://www.w3.org/2000/svg";
+  for(let k=0;k<N;k++){
+    const a0=(k*STEP-90)*Math.PI/180,a1=((k+1)*STEP-90)*Math.PI/180,am=((k+.5)*STEP-90)*Math.PI/180;
+    const p=document.createElementNS(ns,"path");
+    p.setAttribute("d",`M200 200 L${200+r*Math.cos(a0)} ${200+r*Math.sin(a0)} A${r} ${r} 0 0 1 ${200+r*Math.cos(a1)} ${200+r*Math.sin(a1)} Z`);
+    p.setAttribute("class","sec "+(k%2?"odd":"even"));p.id="sec"+k;g.appendChild(p);
+    const t=document.createElementNS(ns,"text");
+    t.setAttribute("x",200+158*Math.cos(am));t.setAttribute("y",200+158*Math.sin(am));
+    t.setAttribute("class","lbl");t.id="lbl"+k;t.textContent=NUMS[k];g.appendChild(t);
+  }
+})();
+
+function screen(id){["scrStart","scrGame","scrEnd"].forEach(x=>$(x).classList.toggle("hidden",x!==id));window.scrollTo(0,0)}
+
+function newGame(mode){
+  S={mode,sA:0,sB:0,played:[],cur:null,phase:"wheel",part:0,rot:0};
+  setArrow(false);save();screen("scrGame");render();
+}
+function setArrow(anim){const a=$("arrow");if(!anim){a.style.transition="none";a.style.transform=`rotate(${S.rot}deg)`;a.getBoundingClientRect();a.style.transition=""}else a.style.transform=`rotate(${S.rot}deg)`}
+
+const HINTS={
+  wheel:"Хтось один натискає «Крутити дзиґу». Стрілка обере питання.",
+  question:"Ведучий читає питання вголос. Коли всі почули, запускайте таймер.",
+  qblitz:"Бліц: три короткі питання, на кожне 20 секунд. Бал знавцям лише за три правильні.",
+  timer:"Обговорюйте всі разом. Капітан обирає одну остаточну відповідь.",
+  answer:"Капітан називає відповідь уголос. Потім відкривайте правильну.",
+  reveal:"Порівняйте відповіді і віддайте бал."
+};
+const STEPIDX={wheel:0,question:1,timer:2,answer:3,reveal:3};
+
+function render(){
+  const q=S.cur!==null?DATA[S.cur]:null, blitz=q&&q.k==="blitz";
+  $("sA").textContent=S.sA;$("sB").textContent=S.sB;
+  $("goal").innerHTML=S.mode==="six"?"до<br>6 балів":`${S.played.length}/${N}`;
+  document.querySelectorAll(".steps li").forEach(li=>{const s=+li.dataset.s,c=STEPIDX[S.phase];li.classList.toggle("on",s===c);li.classList.toggle("done",s<c)});
+  $("hint").textContent=(S.phase==="question"&&blitz)?HINTS.qblitz:HINTS[S.phase];
+
+  for(let k=0;k<N;k++){const p=S.played.includes(k)&&k!==S.cur;$("sec"+k).classList.toggle("played",p);$("lbl"+k).classList.toggle("played",p);$("sec"+k).classList.remove("hit")}
+  $("leftInfo").textContent=`Залишилось питань: ${N-S.played.length}`;
+
+  const onWheel=S.phase==="wheel";
+  $("wheelStage").classList.toggle("hidden",!onWheel);
+  $("qStage").classList.toggle("hidden",onWheel);
+  if(onWheel)return;
+
+  $("qNum").textContent=NUMS[S.cur];
+  $("qTheme").textContent=q.t;
+  $("qPart").classList.toggle("hidden",!blitz);
+  if(blitz)$("qPart").textContent=`Питання ${S.part+1} з 3`;
+  $("qText").textContent=blitz?q.q[S.part]:q.q;
+  const total=blitz?20:60;
+  $("startT").textContent=`Запустити таймер, ${total} секунд`;
+  ["actQuestion","actTimer","actAnswer","actReveal"].forEach(x=>$(x).classList.add("hidden"));
+  $("ring").classList.toggle("hidden",!(S.phase==="question"||S.phase==="timer"));
+  if(S.phase==="question"){left=total;drawRing(total);$("actQuestion").classList.remove("hidden")}
+  if(S.phase==="timer")$("actTimer").classList.remove("hidden");
+  if(S.phase==="answer"){
+    $("answerLead").textContent=blitz?"Капітане, назвіть відповіді на всі три питання.":"Капітане, ваша відповідь?";
+    if(blitz)$("qText").innerHTML=q.q.map((t,i)=>`${i+1}. ${esc(t)}`).join("<br><br>");
+    $("actAnswer").classList.remove("hidden");
+  }
+  if(S.phase==="reveal"){
+    if(blitz)$("qText").innerHTML=q.q.map((t,i)=>`${i+1}. ${esc(t)}`).join("<br><br>");
+    $("answer").innerHTML=blitz?q.a.map((a,i)=>`<p>${i+1}. ${a}</p>`).join(""):`<p>${q.a}</p>`;
+    $("judgeLead").textContent=blitz?"Знавці відповіли правильно на всі три?":"Знавці відповіли правильно?";
+    $("actReveal").classList.remove("hidden");
+  }
+}
+function esc(s){return s.replace(/[&<>]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;"}[c]))}
+function drawRing(total){$("prog").style.strokeDashoffset=C*(1-Math.max(left,0)/total);$("secs").textContent=left;$("ring").classList.toggle("warn",left<=10)}
+
+/* spin */
+$("spinBtn").onclick=()=>{
+  if(spinning)return;
+  const free=[...Array(N).keys()].filter(k=>!S.played.includes(k));
+  if(!free.length)return;
+  spinning=true;$("spinBtn").disabled=true;beep(520,.08);
+  const pick=free[Math.floor(Math.random()*free.length)];
+  const target=pick*STEP+STEP/2+(Math.random()-.5)*STEP*.6;
+  let delta=((target-(S.rot%360))%360+360)%360;
+  S.rot+=360*5+delta;setArrow(true);
+  const dur=matchMedia("(prefers-reduced-motion: reduce)").matches?700:4300;
+  setTimeout(()=>{
+    $("sec"+pick).classList.add("hit");beep(880,.25);buzz(60);
+    setTimeout(()=>{S.cur=pick;S.played.push(pick);S.part=0;S.phase="question";spinning=false;$("spinBtn").disabled=false;save();render();window.scrollTo(0,0)},1000);
+  },dur);
+};
+
+/* timer */
+function totalT(){return DATA[S.cur].k==="blitz"?20:60}
+function runTimer(){
+  const total=totalT();clearInterval(tick);$("pauseT").textContent="Пауза";
+  tick=setInterval(()=>{left--;drawRing(total);
+    if(left===10){beep(660,.15);buzz(80)}
+    if(left<=0){clearInterval(tick);tick=null;beep(330,.6);buzz([200,100,200]);finishTimer()}
+  },1000);
+}
+$("startT").onclick=()=>{left=totalT();S.phase="timer";render();drawRing(totalT());$("ring").classList.remove("hidden");beep(700,.1);runTimer()};
+$("pauseT").onclick=()=>{if(tick){clearInterval(tick);tick=null;$("pauseT").textContent="Продовжити"}else runTimer()};
+$("earlyT").onclick=()=>{clearInterval(tick);tick=null;finishTimer()};
+function finishTimer(){
+  const q=DATA[S.cur];
+  if(q.k==="blitz"&&S.part<2){S.part++;S.phase="question"}else S.phase="answer";
+  save();render();
+}
+$("revealBtn").onclick=()=>{S.phase="reveal";save();render()};
+function point(who){
+  if(who==="A"){S.sA++;bump("sA")}else{S.sB++;bump("sB")}
+  beep(who==="A"?990:440,.2);
+  const over=(S.mode==="six"&&(S.sA>=6||S.sB>=6))||S.played.length>=N;
+  S.cur=null;S.phase=over?"end":"wheel";
+  if(over){clearSave();setTimeout(showEnd,500)}else save();
+  render();
+}
+function bump(id){const e=$(id);e.classList.remove("bump");void e.offsetWidth;e.classList.add("bump")}
+$("yesBtn").onclick=()=>point("A");
+$("noBtn").onclick=()=>point("B");
+
+function showEnd(){
+  $("eA").textContent=S.sA;$("eB").textContent=S.sB;
+  $("winner").textContent=S.sA>S.sB?"Перемогли знавці!":S.sA<S.sB?"Переміг ведучий":"Нічия!";
+  $("endSub").textContent=S.sA>S.sB?"Час для тосту за розумних друзів.":S.sA<S.sB?"Реванш після наступного тосту?":"Мудрий тамада сказав би, що виграли всі.";
+  screen("scrEnd");
+}
+
+/* misc */
+$("modeSix").onclick=()=>newGame("six");
+$("modeAll").onclick=()=>newGame("all");
+$("resume").onclick=()=>{S=load();if(S.phase==="timer")S.phase="question";setArrow(false);screen("scrGame");render()};
+$("againBtn").onclick=()=>{screen("scrStart");$("resumeBox").classList.add("hidden")};
+$("menuBtn").onclick=()=>{if(confirm("Почати нову гру? Поточний рахунок зітреться.")){clearInterval(tick);tick=null;clearSave();$("resumeBox").classList.add("hidden");screen("scrStart")}};
+$("helpBtn").onclick=()=>$("helpDlg").showModal();
+$("helpClose").onclick=()=>$("helpDlg").close();
+
+if(load())$("resumeBox").classList.remove("hidden");
+</script>
+</body>
+</html>
